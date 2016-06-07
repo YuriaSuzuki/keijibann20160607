@@ -1,0 +1,14 @@
+<%= form_for ([our_thread, my_comment]) do |f| %>
+
+<p>
+  <%= f.label :title %>
+  <%= f.text_field :title %>
+  <% if @my_comment.errors.any? %>
+  <%= @my_comment.errors.messages[:title][0] %>
+  <% end %>
+</p>
+
+<p>
+  <%= f.submit %>
+</p>
+<% end %>

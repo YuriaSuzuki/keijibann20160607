@@ -1,0 +1,21 @@
+<h1><%= @our_thread.title %></h1>
+
+<ul>
+    <% @our_thread.my_comments.each do |my_comment| %>
+<li>
+        <%= my_comment.title %>
+        <%= "by"%>  
+        <%= my_comment.user_id%>
+        <%= link_to "Edit", edit_our_thread_my_comment_path(@our_thread, my_comment.id)%>
+        <%= link_to "Destroy", our_thread_my_comment_path(@our_thread, my_comment.id), method: :delete, data: { confirm: 'Are you sure?' } %>
+</li>
+    <% end %>
+
+<li>
+    <%= form_for [@our_thread,@our_thread.my_comments.build] do |f| %>
+        <%= f.text_field :title %>
+        <%= f.submit %>
+    <% end %>
+</li>
+</ul>
+<%= link_to "Back to all threads", our_threads_path %>

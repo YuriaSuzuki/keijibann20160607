@@ -1,0 +1,2 @@
+module OurThreads::CommentsHelper
+end

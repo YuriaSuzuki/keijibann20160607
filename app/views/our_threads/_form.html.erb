@@ -1,0 +1,17 @@
+<%= form_for our_thread do |f| %>
+
+<p>
+    <%= f.label :title %></br>
+    <%= f.text_field :title %>
+    <% if @our_thread.errors.any? %>
+        <%= @our_thread.errors.messages[:title][0] %>
+    <% end %>
+</P>
+
+<p>
+    <%= f.submit %>
+</P>
+
+<%= link_to "Back to all threads", our_threads_path %>
+
+<% end %>
