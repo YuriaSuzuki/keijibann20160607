@@ -9,30 +9,27 @@ describe MyCommentsController, type: :controller do
     end
 
     describe 'POST #create' do
+      before :each do
+        @our_thread = create(:our_thread)
+        @my_comment_b = build(:my_comment, our_thread: @our_thread)
+        @my_comment_c = create(:my_comment, our_thread: @our_thread)
+      end
       context 'with valid attributes' do
         it "saves the new my_comment in database" do
-          our_thread = create(:our_thread)
-          my_comment = build(:my_comment, our_thread: our_thread)
-          expect{post :create, my_comment: attributes_for(:my_comment), id: my_comment, our_thread_id: our_thread.id}.to change(MyComment, :count).by(1)
+          expect{post :create, my_comment: attributes_for(:my_comment), id: @my_comment_b, our_thread_id: @our_thread.id}.to change(MyComment, :count).by(1)
         end
 
         it "redirects to our_threads#show" do
-          our_thread = create(:our_thread)
-          my_comment = create(:my_comment, our_thread: our_thread)
-          post :create, my_comment: attributes_for(:my_comment), id: our_thread, our_thread_id: our_thread
+          post :create, my_comment: attributes_for(:my_comment), id: @my_comment_c, our_thread_id: @our_thread
           expect(response).to redirect_to ("/our_threads/#{assigns(:our_thread).id}")
         end
       end
       context 'with invalid attributes' do
          it "doesn't save the new my_comment in the database" do
-           our_thread = create(:our_thread)
-           my_comment = build(:my_comment, our_thread: our_thread)
-           expect{post :create, my_comment: attributes_for(:invalid_my_comment), id: my_comment, our_thread_id: our_thread.id}.not_to change(MyComment, :count)
+           expect{post :create, my_comment: attributes_for(:invalid_my_comment), id: @my_comment_b, our_thread_id: @our_thread.id}.not_to change(MyComment, :count)
          end
          it "redirects to our_threads#show" do
-           our_thread = create(:our_thread)
-           my_comment = create(:my_comment, our_thread: our_thread)
-           post :create, my_comment: attributes_for(:my_comment), id: our_thread, our_thread_id: our_thread
+           post :create, my_comment: attributes_for(:my_comment), id: @my_comment_c, our_thread_id: @our_thread
            expect(response).to redirect_to ("/our_threads/#{assigns(:our_thread).id}")
          end
       end
@@ -120,7 +117,7 @@ describe MyCommentsController, type: :controller do
           expect{delete :destroy, my_comment: attributes_for(:my_comment), id: @my_comment, our_thread_id: @our_thread.id}.to change(MyComment, :count).by(-1)
         end
         it "redirects to our_threads#show" do
-          post :create, my_comment: attributes_for(:my_comment), id: @our_thread, our_thread_id: @our_thread
+          post :create, my_comment: attributes_for(:my_comment), id: @my_comment, our_thread_id: @our_thread
           expect(response).to redirect_to ("/our_threads/#{assigns(:our_thread).id}")
         end
       end
